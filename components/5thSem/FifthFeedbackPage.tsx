@@ -42,6 +42,7 @@ const ElectiveIII: string[] = [
   "CS1545 ARTIFICIAL NEURAL NETWORK",
   "CS1541 DIGITAL IMAGE PROCESSING",
   "CS1669 DESIGN THINKING",
+  "CS1531 ITCT"
 ];
 
 const ratingKeys = FeedbackParameters.reduce(
