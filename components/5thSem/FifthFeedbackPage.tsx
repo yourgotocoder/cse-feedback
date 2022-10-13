@@ -16,21 +16,32 @@ import Chip from "@mui/material/Chip";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Alert } from "@mui/material";
 
-const steps = ["Select Section", "Feedback"];
+const steps = ["Select Electives", "Feedback"];
 
 const MainSubjects: string[] = [
-  "MA1308 DISCRETE MATHEMATICS",
-  "CS1302 DATA STRUCTURES",
-  "CS1304 DIGITAL CIRCUITS AND LOGIC DESIGN",
-  "CS1306 COMPUTER ORGANIZATION AND ARCHITECTURE",
-  "CS1307 INTELLECTUAL PROPERTY RIGHT AND SOFTWARE",
-  "CS1308 OBJECT ORIENTED CONCEPTS & PROGRAMMING USING C++",
+  "MA1502 PROBABILITY, STATISTICS AND STOCHASTIC PROCESSES",
+  "CS1502 OPERATING SYSTEM",
+  "CS 1508 COMPUTER NETWORKS-I",
+  "CS 1509 SOFTWARE ENGINEERING",
 ];
 
 const Labs: string[] = [
-  "CS1361 DATA STRUCTURES LAB",
-  "CS1363 DIGITAL CIRCUITS & LOGIC DESIGN LAB",
-  "CS1365 OBJECT ORIENTED CONCEPTS & PROGRAMMING USING C++ LAB",
+  "CS 1561 OPERATING SYSTEM LAB",
+  "CS 1566 SOFTWARE ENGINEERING AND OBJECT ORIENTED ANALYSIS LAB",
+  "CS 1567 SCRIPTING LANGUAGE LAB",
+];
+
+const ElectiveII: string[] = [
+  "CS1537 ADVANCED WEB TECHNOLOGIES",
+  "CS1535 GRAPH THEORY",
+  "CS1532 ADVANCED JAVA PROGRAMMING",
+];
+
+const ElectiveIII: string[] = [
+  "CS1759/1644 ARTIFICIAL INTELLIGENCE",
+  "CS1545 ARTIFICIAL NEURAL NETWORK",
+  "CS1541 DIGITAL IMAGE PROCESSING",
+  "CS1669 DESIGN THINKING",
 ];
 
 const ratingKeys = FeedbackParameters.reduce(
@@ -38,8 +49,9 @@ const ratingKeys = FeedbackParameters.reduce(
   {}
 );
 
-const ThirdFeedback = () => {
+const FifthFeedback = () => {
   const content = <MainPageContent />;
+
   return content;
 };
 
@@ -71,10 +83,30 @@ const MainPageContent = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
+  const [ratingsDetailElectiveTwo, setRatingsDetailElectiveTwo] = useState<any>(
+    {}
+  );
+  const [ratingsDetailElectiveThree, setRatingsDetailElectiveThree] =
+    useState<any>({});
+
+  const [electiveTwo, setElectiveTwo] = useState("");
+
+  const handleElectiveTwoChange = (value: string) => {
+    setElectiveTwo(value);
+    setRatingsDetailElectiveTwo({ [value]: ratingKeys });
+  };
+
   const [section, setSection] = useState("");
 
   const handleSectionChange = (value: string) => {
     setSection(value);
+  };
+
+  const [electiveThree, setElectiveThree] = useState("");
+
+  const handleElectiveThreeChange = (value: string) => {
+    setElectiveThree(value);
+    setRatingsDetailElectiveThree({ [value]: ratingKeys });
   };
 
   const handleSubjectRatingChange = (
@@ -93,6 +125,38 @@ const MainPageContent = () => {
     });
   };
 
+  const handleSubjectRatingChangeElectiveTwo = (
+    subjectName: string,
+    label: string,
+    value: number | null
+  ) => {
+    setRatingsDetailElectiveTwo((prevValue: any) => {
+      return {
+        ...prevValue,
+        [subjectName]: {
+          ...prevValue[subjectName],
+          [label]: value,
+        },
+      };
+    });
+  };
+
+  const handleSubjectRatingChangeElectiveThree = (
+    subjectName: string,
+    label: string,
+    value: number | null
+  ) => {
+    setRatingsDetailElectiveThree((prevValue: any) => {
+      return {
+        ...prevValue,
+        [subjectName]: {
+          ...prevValue[subjectName],
+          [label]: value,
+        },
+      };
+    });
+  };
+
   const [invalidForm, setInvalidForm] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -101,6 +165,8 @@ const MainPageContent = () => {
     setSubmitting(true);
     const finalRatings = {
       ...ratingsDetail,
+      ...ratingsDetailElectiveTwo,
+      ...ratingsDetailElectiveThree,
     };
     for (let key in finalRatings) {
       for (let label in finalRatings[key]) {
@@ -111,20 +177,17 @@ const MainPageContent = () => {
       }
     }
     setInvalidForm(false);
-    const response = await fetch(
-      `/api/feedback/submit`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          ratingData: { ...finalRatings },
-          section: section,
-          semester: 3,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`/api/feedback/submit`, {
+      method: "POST",
+      body: JSON.stringify({
+        ratingData: { ...finalRatings },
+        section: section,
+        semester: 5,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     if (response.ok) {
       setSubmitted(true);
     }
@@ -174,6 +237,16 @@ const MainPageContent = () => {
                         {index === 0 && (
                           <>
                             <Select
+                              label="Elective II"
+                              subjectObject={ElectiveII}
+                              handleElectiveChange={handleElectiveTwoChange}
+                            />
+                            <Select
+                              label="Elective III"
+                              subjectObject={ElectiveIII}
+                              handleElectiveChange={handleElectiveThreeChange}
+                            />
+                            <Select
                               label="Section"
                               subjectObject={["A", "B", "C"]}
                               handleElectiveChange={handleSectionChange}
@@ -189,6 +262,22 @@ const MainPageContent = () => {
                                 subjectRatings={handleSubjectRatingChange}
                               ></SubjectRating>
                             ))}
+                            {electiveTwo !== "" && (
+                              <SubjectRating
+                                subjectLabel={electiveTwo}
+                                subjectRatings={
+                                  handleSubjectRatingChangeElectiveTwo
+                                }
+                              />
+                            )}
+                            {electiveThree !== "" && (
+                              <SubjectRating
+                                subjectLabel={electiveThree}
+                                subjectRatings={
+                                  handleSubjectRatingChangeElectiveThree
+                                }
+                              />
+                            )}
                             {Labs.map((subject) => (
                               <SubjectRating
                                 key={subject}
@@ -231,7 +320,11 @@ const MainPageContent = () => {
                                 variant="contained"
                                 onClick={handleNext}
                                 sx={{ mt: 1, mr: 1 }}
-                                disabled={section === ""}
+                                disabled={
+                                  electiveTwo === "" ||
+                                  electiveThree === "" ||
+                                  section === ""
+                                }
                               >
                                 Continue
                               </Button>
@@ -251,4 +344,4 @@ const MainPageContent = () => {
   );
 };
 
-export default ThirdFeedback;
+export default FifthFeedback;

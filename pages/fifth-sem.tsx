@@ -1,11 +1,10 @@
-import React from 'react'
+import React from "react";
+import FifthFeedback from "../components/5thSem/FifthFeedbackPage";
 
-type Props = {}
+type Props = {};
 
 const FifthSem = (props: Props) => {
-  return (
-    <div>FifthSem</div>
-  )
-}
+  return <FifthFeedback />;
+};
 
-export default FifthSem
+export default FifthSem;
