@@ -1,11 +1,10 @@
-import React from 'react'
+import React from "react";
+import SeventhFeedback from "../components/7thSem/SeventFeedbackPage";
 
-type Props = {}
+type Props = {};
 
 const SeventhSem = (props: Props) => {
-  return (
-    <div>SeventhSem</div>
-  )
-}
+  return <SeventhFeedback />;
+};
 
-export default SeventhSem
+export default SeventhSem;
