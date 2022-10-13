@@ -1,5 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { MongoAPIError, MongoClient, MongoNotConnectedError, ObjectId } from "mongodb";
+import {
+  MongoAPIError,
+  MongoClient,
+  MongoNotConnectedError,
+  ObjectId,
+} from "mongodb";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
@@ -24,14 +29,16 @@ export default async function handler(
           _id: new ObjectId(id as string),
         });
         await client.close();
+        if (feedbackData === null) throw new Error("Invalid ID");
         res
           .status(200)
           .json({ error: false, message: "Success", data: feedbackData });
       } catch (err) {
-        res.status(405).json({ error: true, message: "No result found" });
+        console.log(err);
+        res.status(405).json({ error: true, message: "No result found", err });
       }
     } catch (err) {
-        console.log(err)
+      console.log(err);
       res.status(405).json({
         error: true,
         message: "Failed to connect to db",
