@@ -175,8 +175,8 @@ const MainPageContent = () => {
                           <>
                             <Select
                               label="Section"
-                              subjectObject={["A", "B", "C"]}
-                              handleElectiveChange={handleSectionChange}
+                              options={["A", "B", "C"]}
+                              handleSelectionChange={handleSectionChange}
                             />
                           </>
                         )}

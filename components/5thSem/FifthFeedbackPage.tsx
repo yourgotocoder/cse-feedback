@@ -238,18 +238,18 @@ const MainPageContent = () => {
                           <>
                             <Select
                               label="Elective II"
-                              subjectObject={ElectiveII}
-                              handleElectiveChange={handleElectiveTwoChange}
+                              options={ElectiveII}
+                              handleSelectionChange={handleElectiveTwoChange}
                             />
                             <Select
                               label="Elective III"
-                              subjectObject={ElectiveIII}
-                              handleElectiveChange={handleElectiveThreeChange}
+                              options={ElectiveIII}
+                              handleSelectionChange={handleElectiveThreeChange}
                             />
                             <Select
                               label="Section"
-                              subjectObject={["A", "B", "C"]}
-                              handleElectiveChange={handleSectionChange}
+                              options={["A", "B", "C"]}
+                              handleSelectionChange={handleSectionChange}
                             />
                           </>
                         )}

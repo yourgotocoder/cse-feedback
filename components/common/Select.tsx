@@ -6,9 +6,9 @@ import FormLabel from "@mui/material/FormLabel";
 import Paper from "@mui/material/Paper";
 
 type Props = {
-  subjectObject: string[];
+  options: string[];
   label: string;
-  handleElectiveChange: (value: string) => void;
+  handleSelectionChange: (value: string) => void;
 };
 
 const Select = (props: Props) => {
@@ -22,10 +22,10 @@ const Select = (props: Props) => {
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
           name="row-radio-buttons-group"
-          onChange={(e) => props.handleElectiveChange(e.target.value)}
+          onChange={(e) => props.handleSelectionChange(e.target.value)}
         >
-          {!!props.subjectObject &&
-            props.subjectObject.map((keyName) => (
+          {!!props.options &&
+            props.options.map((keyName) => (
               <FormControlLabel
                 key={keyName}
                 value={keyName}
