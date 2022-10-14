@@ -40,17 +40,6 @@ const ElectiveVIII: string[] = [
   "CS1631 DEEP LEARNING ",
 ];
 
-const OpenElectiveI: string[] = [
-  "CS1723 IPR",
-  "CS1728/CS1701 DISTRIBUTED SYSTEMS",
-  "CS1724 OPTIMIZATION TECHNIQ UES",
-  "CS1729 ENGINEERING RESEARCH METHODOLOGY",
-  "EC1721 INDUSTRIAL IOT AND INDUSTRY 4.0",
-  "EC1722 AUTOMATION AND ROBOTICS",
-  "EC1723 MEMS AND NEMS DEVICES",
-  "EE1724 MACHINE LEARNING",
-];
-
 const ratingKeys = FeedbackParameters.reduce(
   (acc, key) => ({ ...acc, [key]: null }),
   {}
@@ -162,31 +151,6 @@ const MainPageContent = () => {
     });
   };
 
-  const [openElective, setOpenElective] = useState("");
-  const [ratingsDetailOpenElective, setRatingDetailOpenElective] =
-    useState<any>({});
-
-  const handleOpenElectiveChange = (value: string) => {
-    setOpenElective(value);
-    setRatingDetailOpenElective({ [value]: ratingKeys });
-  };
-
-  const handleSubjectRatingChangeOpenElective = (
-    subjectName: string,
-    label: string,
-    value: number | null
-  ) => {
-    setRatingDetailOpenElective((prevValue: any) => {
-      return {
-        ...prevValue,
-        [subjectName]: {
-          ...prevValue[subjectName],
-          [label]: value,
-        },
-      };
-    });
-  };
-
   const [invalidForm, setInvalidForm] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -197,7 +161,6 @@ const MainPageContent = () => {
       ...ratingsDetail,
       ...ratingsDetailElectiveSeven,
       ...ratingsDetailElectiveEight,
-      ...ratingsDetailOpenElective,
     };
     for (let key in finalRatings) {
       for (let label in finalRatings[key]) {
@@ -279,11 +242,6 @@ const MainPageContent = () => {
                               handleSelectionChange={handleElectiveEightChange}
                             />
                             <Select
-                              label="Open Elective"
-                              options={OpenElectiveI}
-                              handleSelectionChange={handleOpenElectiveChange}
-                            />
-                            <Select
                               label="Section"
                               options={["A", "B", "C"]}
                               handleSelectionChange={handleSectionChange}
@@ -312,14 +270,6 @@ const MainPageContent = () => {
                                 subjectLabel={electiveEight}
                                 subjectRatings={
                                   handleSubjectRatingChangeElectiveEight
-                                }
-                              />
-                            )}
-                            {openElective !== "" && (
-                              <SubjectRating
-                                subjectLabel={openElective}
-                                subjectRatings={
-                                  handleSubjectRatingChangeOpenElective
                                 }
                               />
                             )}
@@ -368,7 +318,6 @@ const MainPageContent = () => {
                                 disabled={
                                   electiveSeven === "" ||
                                   electiveEight === "" ||
-                                  openElective === "" ||
                                   section === ""
                                 }
                               >

@@ -2,7 +2,7 @@ import { IJsonSheet } from "json-as-xlsx";
 import { FeedbackData } from "../models/Feedback.model";
 
 const transformData = (data: FeedbackData[]) => {
-  return data.reduce((acc: IJsonSheet[], cur) => {
+  const transformedData =  data.reduce((acc:IJsonSheet[], cur) => {
     for (let key in cur.ratingData) {
       const sheetName = key.replace('/', "").substring(0, 30);
       if (!acc.some((element: any) => element.sheet === sheetName)) {
@@ -55,6 +55,13 @@ const transformData = (data: FeedbackData[]) => {
     }
     return acc;
   }, []);
+  const averages = transformedData.reduce((acc: any, cur) => {
+    const sheetName = cur.sheet;
+    
+    
+    return acc;
+  }, {})
+  return transformedData;
 };
 
 export default transformData;
