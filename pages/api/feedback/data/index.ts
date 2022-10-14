@@ -1,6 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { MongoClient, ObjectId } from "mongodb";
 import type { NextApiRequest, NextApiResponse } from "next";
+import dbConnect from "../../../../lib/dbConnect";
+import Feedback, { FeedbackData } from "../../../../models/Feedback.model";
 
 type Data = {
   error: boolean;
@@ -15,7 +17,15 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const { startDate, endDate, semester } = req.query;
-    res.status(200).json({ error: false, message: "Success", data: req.query });
+    try {
+      const client = await dbConnect();
+      if (client) {
+        const data = await Feedback.find();
+        res.status(200).json({ error: false, message: "Success", data });
+      }
+    } catch (err) {
+      console.log(err);
+    }
   } else {
     res.status(405).json({ error: true, message: "Invalid method" });
   }
