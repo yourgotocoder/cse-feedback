@@ -56,17 +56,17 @@ export default async function handler(
             bookType: "xlsx",
           },
         };
-        res
-          .status(200)
-          .json({ error: false, message: "Success", data: transformedData });
-        // const buffer = xlsx(transformedData, settings);
-        // res.writeHead(200, {
-        //   "Content-Type": "application/octet-stream",
-        //   "Content-disposition": `attachment; filename=${semesterNumber}${
-        //     semesterNumber === (7 || 5) ? "th" : "rd"
-        //   }Sem_DAC_${MonthsInWord[monthIndex]}_${year}.xlsx`,
-        // });
-        // res.end(buffer);
+        // res
+        //   .status(200)
+        //   .json({ error: false, message: "Success", data: transformedData });
+        const buffer = xlsx(transformedData, settings);
+        res.writeHead(200, {
+          "Content-Type": "application/octet-stream",
+          "Content-disposition": `attachment; filename=${semesterNumber}${
+            semesterNumber === (7 || 5) ? "th" : "rd"
+          }Sem_DAC_${MonthsInWord[monthIndex]}_${year}.xlsx`,
+        });
+        res.end(buffer);
       }
     } catch (err) {
       console.log(err);

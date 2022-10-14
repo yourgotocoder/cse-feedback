@@ -59,32 +59,36 @@ const transformData = (data: FeedbackData[]) => {
     const sheetName = cur.sheet;
     const resultObj = cur.content.reduce((prevValue: any, currentValue) => {
       const keys = Object.keys(currentValue);
-      // console.log(prevValue)
       for (let keyValue of keys) {
         if (
           !prevValue[keyValue] &&
           typeof currentValue[keyValue] === "number"
         ) {
           prevValue[keyValue] = currentValue[keyValue];
-          console.log(currentValue[keyValue]);
         } else if (
           prevValue[keyValue] &&
           typeof prevValue[keyValue] === "number" &&
           typeof currentValue[keyValue] === "number"
         ) {
-          console.log(prevValue[keyValue]);
           prevValue[keyValue] = prevValue[keyValue] + currentValue[keyValue];
         }
       }
-
       return prevValue;
     }, {});
+    for (let keyName in resultObj) {
+      resultObj[keyName] /= cur.content.length;
+    }
+
     if (sheetName) {
       acc[sheetName] = resultObj;
     }
     return acc;
   }, {});
-  return averages;
+  for (let key in averages) {
+    const index = transformedData.findIndex(currentObj => currentObj.sheet === key);
+    transformedData[index].content.push(averages[key]);
+  }
+  return transformedData;
 };
 
 export default transformData;
