@@ -1,11 +1,13 @@
+import { IJsonSheet } from "json-as-xlsx";
 import { FeedbackData } from "../models/Feedback.model";
 
 const transformData = (data: FeedbackData[]) => {
-  return data.reduce((acc: any[], cur) => {
+  return data.reduce((acc: IJsonSheet[], cur) => {
     for (let key in cur.ratingData) {
-      if (!acc.some((element: any) => element.sheet === key)) {
+      const sheetName = key.substring(0, 30);
+      if (!acc.some((element: any) => element.sheet === sheetName)) {
         acc.push({
-          sheet: key,
+          sheet: sheetName,
           columns: [
             { label: "Pace of Delivery", value: "Pace of Delivery" },
             { label: "Quality of Teaching", value: "Quality of Teaching" },
@@ -18,7 +20,7 @@ const transformData = (data: FeedbackData[]) => {
             },
             { label: "Helps weak Students", value: "Helps weak Students" },
             { label: "Subject Expertise", value: "Subject Expertise" },
-            { label: "Section", value: "Sections" },
+            { label: "Section", value: "Section" },
           ],
           content: [
             {
@@ -35,9 +37,10 @@ const transformData = (data: FeedbackData[]) => {
             },
           ],
         });
-      } else if (acc.some((element: any) => element.sheet === key)) {
-        const index = acc.findIndex((element) => element.sheet === key);
+      } else if (acc.some((element: any) => element.sheet === sheetName)) {
+        const index = acc.findIndex((element) => element.sheet === sheetName);
         acc[index].content.push({
+          Section: cur.section,
           "Pace of Delivery": cur.ratingData[key]["Pace of Delivery"],
           "Quality of Teaching": cur.ratingData[key]["Quality of Teaching"],
           "Clearing of Doubt": cur.ratingData[key]["Clearing of Doubt"],
