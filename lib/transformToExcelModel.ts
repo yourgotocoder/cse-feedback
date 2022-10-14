@@ -4,7 +4,7 @@ import { FeedbackData } from "../models/Feedback.model";
 const transformData = (data: FeedbackData[]) => {
   return data.reduce((acc: IJsonSheet[], cur) => {
     for (let key in cur.ratingData) {
-      const sheetName = key.substring(0, 30);
+      const sheetName = key.replace('/', "").substring(0, 30);
       if (!acc.some((element: any) => element.sheet === sheetName)) {
         acc.push({
           sheet: sheetName,
