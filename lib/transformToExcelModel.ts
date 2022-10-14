@@ -2,9 +2,9 @@ import { IJsonSheet } from "json-as-xlsx";
 import { FeedbackData } from "../models/Feedback.model";
 
 const transformData = (data: FeedbackData[]) => {
-  const transformedData =  data.reduce((acc:IJsonSheet[], cur) => {
+  const transformedData = data.reduce((acc: IJsonSheet[], cur) => {
     for (let key in cur.ratingData) {
-      const sheetName = key.replace('/', "").substring(0, 30);
+      const sheetName = key.replace("/", "").substring(0, 30);
       if (!acc.some((element: any) => element.sheet === sheetName)) {
         acc.push({
           sheet: sheetName,
@@ -57,11 +57,34 @@ const transformData = (data: FeedbackData[]) => {
   }, []);
   const averages = transformedData.reduce((acc: any, cur) => {
     const sheetName = cur.sheet;
-    
-    
+    const resultObj = cur.content.reduce((prevValue: any, currentValue) => {
+      const keys = Object.keys(currentValue);
+      // console.log(prevValue)
+      for (let keyValue of keys) {
+        if (
+          !prevValue[keyValue] &&
+          typeof currentValue[keyValue] === "number"
+        ) {
+          prevValue[keyValue] = currentValue[keyValue];
+          console.log(currentValue[keyValue]);
+        } else if (
+          prevValue[keyValue] &&
+          typeof prevValue[keyValue] === "number" &&
+          typeof currentValue[keyValue] === "number"
+        ) {
+          console.log(prevValue[keyValue]);
+          prevValue[keyValue] = prevValue[keyValue] + currentValue[keyValue];
+        }
+      }
+
+      return prevValue;
+    }, {});
+    if (sheetName) {
+      acc[sheetName] = resultObj;
+    }
     return acc;
-  }, {})
-  return transformedData;
+  }, {});
+  return averages;
 };
 
 export default transformData;
