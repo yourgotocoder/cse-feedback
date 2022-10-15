@@ -87,7 +87,9 @@ const transformData = (data: FeedbackData[]) => {
       return prevValue;
     }, {});
     for (let keyName in resultObj) {
-      resultObj[keyName] = (resultObj[keyName] / cur.content.length).toFixed(2);
+      resultObj[keyName] = +(resultObj[keyName] / cur.content.length).toFixed(
+        2
+      );
     }
 
     if (sheetName) {
@@ -109,14 +111,19 @@ const transformData = (data: FeedbackData[]) => {
     const contentLastIndex = transformedData[index].content.length - 1;
     let FinalAverage = 0;
     for (let itemKey in transformedData[index].content[contentLastIndex]) {
-        if(typeof +transformedData[index].content[contentLastIndex][itemKey] === "number") {
-            FinalAverage += +transformedData[index].content[contentLastIndex][itemKey] as number;
-        }
+      if (
+        typeof +transformedData[index].content[contentLastIndex][itemKey] ===
+        "number"
+      ) {
+        FinalAverage += +transformedData[index].content[contentLastIndex][
+          itemKey
+        ] as number;
+      }
     }
     FinalAverage /= 8;
     transformedData[index].content[contentLastIndex]["Serial No"] = "Avg";
     transformedData[index].content[contentLastIndex]["Section"] = "Grand Avg";
-    transformedData[index].content.push({"Section": FinalAverage})
+    transformedData[index].content.push({ Section: FinalAverage });
   }
   return transformedData;
 };
