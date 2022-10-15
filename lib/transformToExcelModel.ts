@@ -102,6 +102,13 @@ const transformData = (data: FeedbackData[]) => {
     transformedData[index].content.push({});
     transformedData[index].content.push(averages[key]);
   }
+  for (let key in averages) {
+    const index = transformedData.findIndex(
+      (currentObj) => currentObj.sheet === key
+    );
+    const contentLastIndex = transformedData[index].content.length - 1;
+    transformedData[index].content[contentLastIndex]["Serial No"] = "Avg";
+  }
   return transformedData;
 };
 
