@@ -63,7 +63,7 @@ export default async function handler(
         res.writeHead(200, {
           "Content-Type": "application/octet-stream",
           "Content-disposition": `attachment; filename=${semesterNumber}${
-            semesterNumber === (7 || 5) ? "th" : "rd"
+            semesterNumber === 7  ? "th" : semesterNumber === 5 ? "th" : 'rd'
           }Sem_DAC_${MonthsInWord[monthIndex]}_${year}.xlsx`,
         });
         res.end(buffer);
