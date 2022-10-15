@@ -107,7 +107,16 @@ const transformData = (data: FeedbackData[]) => {
       (currentObj) => currentObj.sheet === key
     );
     const contentLastIndex = transformedData[index].content.length - 1;
+    let FinalAverage = 0;
+    for (let itemKey in transformedData[index].content[contentLastIndex]) {
+        if(typeof +transformedData[index].content[contentLastIndex][itemKey] === "number") {
+            FinalAverage += +transformedData[index].content[contentLastIndex][itemKey] as number;
+        }
+    }
+    FinalAverage /= 8;
     transformedData[index].content[contentLastIndex]["Serial No"] = "Avg";
+    transformedData[index].content[contentLastIndex]["Section"] = "Grand Avg";
+    transformedData[index].content.push({"Section": FinalAverage})
   }
   return transformedData;
 };
