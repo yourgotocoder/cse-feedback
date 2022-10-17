@@ -1,11 +1,15 @@
 import { IJsonSheet } from "json-as-xlsx";
 import { FeedbackData } from "../models/Feedback.model";
+import MainSubjects from "../models/MainSubjects";
 
 const transformData = (data: FeedbackData[]) => {
   const transformedData = data.reduce(
     (acc: IJsonSheet[], cur, currentIndex) => {
       for (let key in cur.ratingData) {
-        const sheetName = key.replace("/", "").substring(0, 30);
+        let sheetName = key.replace("/", "").substring(0, 25);
+        if (MainSubjects.includes(key)) {
+          sheetName = `Sec_${cur.section}_${sheetName}`;
+        }
         if (!acc.some((element: any) => element.sheet === sheetName)) {
           acc.push({
             sheet: sheetName,
