@@ -1,0 +1,22 @@
+name: deploy-main
+
+on:
+    push:
+        branches: [main]
+
+jobs:
+    deploy:
+        runs-on: ubuntu-20.04
+        steps:
+            - name: Deploy CSE major project management app
+              uses: appleboy/ssh-action@v0.1.2
+              with:
+                  host: ${{secrets.SSH_HOST}}
+                  username: ${{ secrets.SSH_USERNAME }}
+                  password: ${{ secrets.SSH_PASSWORD }}
+                  script: |
+                      cd /var/www/html/feedback.dalabsmit.in/cse-feedback
+                      git pull
+                      npm install
+                      npm run build
+                      pm2 restart feedback
