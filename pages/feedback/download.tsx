@@ -5,6 +5,9 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import DatePicker from "../../components/UI/DatePicker";
+//
+
 
 type Props = {};
 
@@ -25,9 +28,7 @@ const Download = (props: Props) => {
         }}
       >
         <CardContent>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Word of the Day
-          </Typography>
+          <DatePicker/>
           <Typography variant="h5" component="div"></Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             adjective
