@@ -20,7 +20,7 @@ export default async function handler(
     try {
       const client = await MongoClient.connect(process.env.DB_URL as string);
 
-      const db = client.db("feedback-2022");
+      const db = client.db("feedback-2023");
       const collection = db.collection("feedback-data");
       const dataToBeSaved = {
         ...body,

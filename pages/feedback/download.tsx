@@ -4,19 +4,35 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import DatePicker from "../../components/UI/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
+import { Stack } from "@mui/material";
 //
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 type Props = {};
 
 const Download = (props: Props) => {
-  const handleStartDateChange = (newDate: Dayjs | null) => {
-    console.log(newDate);
+  const [semester, setSemester] = useState<number>(3);
+  const handleSemesterChange = (event: SelectChangeEvent) => {
+    const semesterString = event.target.value as string;
+    setSemester(+semesterString);
   };
 
-  const [minDate, setMinDate] = useState<Dayjs | null>(null);
+  const [minDate, setMinDate] = useState<Dayjs>();
+
+  const [startDate, setStartDate] = useState<Dayjs>(dayjs(new Date()));
+  const [endDate, setEndDate] = useState<Dayjs>(dayjs(new Date()));
+
+  const handleStartDateChange = (newDate: Dayjs) => {
+    setStartDate(newDate);
+  };
+  const handleEndDateChange = (newDate: Dayjs) => {
+    setEndDate(newDate);
+  };
 
   useEffect(() => {
     const getMinDate = async () => {
@@ -25,11 +41,13 @@ const Download = (props: Props) => {
       });
       const data = await response.json();
       setMinDate(dayjs(new Date(data.startDate)));
-      console.log(new Date(data.startDate))
-      // console.log(dayjs(new Date(data.startDate)));
     };
     getMinDate();
   }, []);
+
+  const generateDownloadLink = () => {
+    console.log(startDate, endDate, semester)
+  };
 
   return (
     <div>
@@ -47,24 +65,54 @@ const Download = (props: Props) => {
         }}
       >
         <CardContent>
-          <DatePicker
-            label="Start Date"
-            minDate={minDate}
-            handleDateChange={handleStartDateChange}
-            disabledPicker={minDate === null ? true : false}
-          />
-          <Typography variant="h5" component="div"></Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            adjective
-          </Typography>
-          <Typography variant="body2">
-            well meaning and kindly.
-            <br />
-            {'"a benevolent smile"'}
-          </Typography>
+          <Stack spacing={3}>
+            <DatePicker
+              label="Start Date"
+              minDate={minDate}
+              handleDateChange={handleStartDateChange}
+              disabledPicker={typeof minDate === 'undefined' ? true : false}
+            />
+            <DatePicker
+              label="End Date"
+              minDate={minDate}
+              handleDateChange={handleEndDateChange}
+              disabledPicker={minDate === null ? true : false}
+            />
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Semester</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={semester}
+                label="Semester"
+                onChange={handleSemesterChange}
+              >
+                <MenuItem value={3}>3</MenuItem>
+                <MenuItem value={4}>4</MenuItem>
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={6}>6</MenuItem>
+                <MenuItem value={7}>7</MenuItem>
+                <MenuItem value={8}>8</MenuItem>
+              </Select>
+            </FormControl>
+          </Stack>
         </CardContent>
-        <CardActions>
-          <Button size="small">Learn More</Button>
+        <CardActions
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Button
+            size="small"
+            color="primary"
+            variant="contained"
+            onClick={generateDownloadLink}
+          >
+            {" "}
+            Generate Download Link
+          </Button>
         </CardActions>
       </Card>
     </div>

@@ -6,7 +6,7 @@ const transformData = (data: FeedbackData[]) => {
   const transformedData = data.reduce(
     (acc: IJsonSheet[], cur, currentIndex) => {
       for (let key in cur.ratingData) {
-        let sheetName = key.replace("/", "").substring(0, 25);
+        let sheetName = key.replaceAll("/", "").substring(0, 25);
         if (MainSubjects.includes(key)) {
           sheetName = `Sec_${cur.section}_${sheetName}`;
         }

@@ -12,8 +12,8 @@ import useWindowDimensions from "../../hooks/getWindowDimension";
 
 type Props = {
   label?: string;
-  handleDateChange: (newDate: Dayjs | null) => void;
-  minDate?: Dayjs | null;
+  handleDateChange: (newDate: Dayjs) => void;
+  minDate?: Dayjs;
   disabledPicker: boolean;
 };
 
@@ -26,7 +26,8 @@ const DatePicker = (props: Props) => {
 
   const handleChange = (newValue: Dayjs | null) => {
     setValue(newValue);
-    props.handleDateChange(newValue);
+    
+    newValue && props.handleDateChange(newValue);
   };
 
   return (
@@ -35,7 +36,7 @@ const DatePicker = (props: Props) => {
         {width && width > 600 && (
           <DesktopDatePicker
             label={props.label}
-            inputFormat="MM/DD/YYYY"
+            inputFormat="DD/MM/YYYY"
             value={value}
             onChange={handleChange}
             renderInput={(params) => <TextField {...params} />}
@@ -46,11 +47,12 @@ const DatePicker = (props: Props) => {
         {width && width <= 600 && (
           <MobileDatePicker
             label={props.label}
-            inputFormat="MM/DD/YYYY"
+            inputFormat="DD/MM/YYYY"
             value={value}
             onChange={handleChange}
             renderInput={(params) => <TextField {...params} />}
-            // minDate={dayjs(new Date(typeof props.minDate === "string"  && props.minDate))}
+            disabled={props.disabledPicker}
+            minDate={dayjs(props.minDate)}
           />
         )}
       </Stack>
