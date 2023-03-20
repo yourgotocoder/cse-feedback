@@ -83,7 +83,7 @@ const Download = (props: Props) => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={semester}
+                value={semester.toString()}
                 label="Semester"
                 onChange={handleSemesterChange}
               >
