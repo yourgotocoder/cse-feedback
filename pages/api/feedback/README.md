@@ -1,6 +1,6 @@
 # Retrieving data
 ## URL for excel data 
-https://feedback.dalabsmit.in/api/feedback/data?startDate=***startDateValue***&endDate=***endDateValue***&semester=***semesterValue***
+https://feedback.dalabsmit.in/api/feedback/data?startDate=***startDateValue***&endDate=***endDateValue***&semester=***semesterValue***&section=SECTION_IN_CAPS
 
 ***Query Parameters***
 
@@ -10,8 +10,11 @@ https://feedback.dalabsmit.in/api/feedback/data?startDate=***startDateValue***&e
 
 ***semesterValue***=**number**
 
+***section***=**string**
+
+
 ## Example
 
-https://feedback.dalabsmit.in/api/feedback/data?startDate=10/13/2022&endDate=10/15/2022&semester=5
+https://feedback.dalabsmit.in/api/feedback/data?startDate=03/18/2023&endDate=03/25/2023&semester=6&section=A
 
 

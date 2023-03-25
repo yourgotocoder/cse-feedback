@@ -20,7 +20,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "GET") {
-    const { startDate, endDate, semester } = req.query;
+    const { startDate, endDate, semester, section } = req.query;
     const semesterNumber =
       semester && typeof semester === "string" && +semester;
     const startDateObj =
@@ -47,7 +47,8 @@ export default async function handler(
             startDateObj &&
             new Date(element.date) >= startDateObj &&
             endDateObj &&
-            new Date(element.date) <= endDateObj
+            new Date(element.date) <= endDateObj &&
+            element.section === section
         );
         const transformedData: IJsonSheet[] = transformData(filteredData);
         const settings: ISettings = {
@@ -63,8 +64,8 @@ export default async function handler(
         res.writeHead(200, {
           "Content-Type": "application/octet-stream",
           "Content-disposition": `attachment; filename=${semesterNumber}${
-            semesterNumber === 7  ? "th" : semesterNumber === 5 ? "th" : 'rd'
-          }Sem_DAC_${MonthsInWord[monthIndex]}_${year}.xlsx`,
+            semesterNumber === 1  ? "st" : semesterNumber === 2 ? "nd" : 'th'
+          }Sem_DAC_${section}_${MonthsInWord[monthIndex]}_${year}.xlsx`,
         });
         res.end(buffer);
       }
